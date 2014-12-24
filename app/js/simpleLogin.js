@@ -1,4 +1,4 @@
-
+'use strict';
 angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
 
   // a simple wrapper on simpleLogin.getUser() that rejects the promise
@@ -8,7 +8,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
       return simpleLogin.getUser().then(function (user) {
         return user ? user : $q.reject({ authRequired: true });
       });
-    }
+    };
   }])
 
   .factory('simpleLogin', ['$firebaseAuth', 'fbutil', 'createProfile', 'changeEmail',
@@ -47,7 +47,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         },
 
         createAccount: function(email, pass, name) {
-          return auth.$createUser({email: email, password: pass})
+          return auth.$createUser(email, pass)
             .then(function() {
               // authenticate so we have permission to write to Firebase
               return fns.login(email, pass);
@@ -61,7 +61,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         },
 
         changePassword: function(email, oldpass, newpass) {
-          return auth.$changePassword({email: email, oldPassword: oldpass, newPassword: newpass});
+          return auth.$changePassword(email, oldpass, newpass);
         },
 
         changeEmail: function(password, oldEmail, newEmail) {
@@ -69,7 +69,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
         },
 
         removeUser: function(email, pass) {
-          return auth.$removeUser({email: email, password: pass});
+          return auth.$removeUser(email, pass);
         },
 
         watch: function(cb, $scope) {
@@ -105,7 +105,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
           else {
             def.resolve(ref);
           }
-        })
+        });
       });
 
       function firstPartOfEmail(email) {
@@ -120,5 +120,5 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
       }
 
       return def.promise;
-    }
+    };
   }]);
